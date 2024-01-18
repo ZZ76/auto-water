@@ -1,0 +1,12 @@
+[Unit]
+Description=auto water
+After=multi-user.target
+[Service]
+WorkingDirectory=/home/<username>/auto-water/
+User=<username>
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 /home/<username>/auto-water/main.py
+Environment="PYTHON=$PYTHONPATH:/home/<username>/.local/lib/python3.9/site-packages"
+[Install]
+WantedBy=multi-user.target
