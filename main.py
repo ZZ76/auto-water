@@ -15,12 +15,13 @@ water after 6am, use now.hour
 while True:
   1.load latest data time
   2.get current time
-  3.compare current time and data time
+  3.calculate time delta between current time and data time, compare with gap days
   4.if True:
           water
           write data
       else:
           pass
+    sleep interval
 '''
 
 log = config.LOG_FILE
@@ -28,6 +29,8 @@ csv_file = config.CSV_FILE
 start_time = config.START_TIME
 water_duration = config.WATER_DURATION
 check_interval = config.CHECK_INTERVAL
+gap_days = config.GAP_DAYS
+duty = config.DUTY
 pin = config.PIN
 
 def get_current_time():
@@ -45,13 +48,13 @@ def process_last_date(d: str):
     global df
     now = datetime.now()
     last_day = datetime.strptime(d, '%Y-%m-%d')
-    if now.day > last_day.day:
+    if now.day - last_day.day > gap_days:
         if now.hour >= start_time:
             start = now.strftime('%H:%M:%S')
             # watering
             print(f'{get_current_time()} watering...')
             logging.info(f'watering...')
-            water.water_pwm(water_duration, pin=pin)
+            water.water_pwm(water_duration, pin=pin, duty=duty)
             # finish, writing data
             finish_time = datetime.now()
             finish = finish_time.strftime('%H:%M:%S')
@@ -78,8 +81,8 @@ def process_last_date(d: str):
             # upload csv here
             s3.upload_csv()
         else:
-            print(f'{get_current_time()} too early to water')
-            logging.info(f'too early to water')
+            print(f'{get_current_time()} too early to water for today')
+            logging.info(f'too early to water for today')
             return
     else:
         print(f'{get_current_time()} already watered')
