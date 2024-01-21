@@ -37,10 +37,10 @@ def upload_file(file_name, object_name=None):
     # Upload the file
     try:
         response = s3_client.upload_file(file_name, BUCKET_NAME, object_name)
-        logging.info(f'uploaded {file_name}')
+        logging.info(f'Uploaded {file_name}')
         return True
     except ClientError as e:
-        logging.error(f'upload {file_name} failed, {e}')
+        logging.error(f'Upload {file_name} failed, {e}')
         return False
 
 def upload_csv():

@@ -1,6 +1,6 @@
 import pandas as pd
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import sys
 import s3
@@ -39,7 +39,7 @@ def get_current_time():
 logging.basicConfig(format='%(asctime)s-%(name)s-%(levelname)s: %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
         filename=log, encoding='utf-8', level=logging.INFO)
-logging.info(f'start')
+logging.info('Start')
 
 #def water():
 #    time.sleep(water_duration)
@@ -52,10 +52,12 @@ def process_last_date(d: str):
         if now.hour >= start_time:
             start = now.strftime('%H:%M:%S')
             # watering
-            print(f'{get_current_time()} watering...')
-            logging.info(f'watering...')
+            print(f'{get_current_time()} Watering...')
+            logging.info('Watering...')
             water.water_pwm(water_duration, pin=pin, duty=duty)
             # finish, writing data
+            print(f'{get_current_time()} Watering completed')
+            logging.info('Watering completed')
             finish_time = datetime.now()
             finish = finish_time.strftime('%H:%M:%S')
             new_date = now.strftime('%Y-%m-%d')
@@ -75,18 +77,20 @@ def process_last_date(d: str):
                 )
             #print(new_df)
             #print(new_date, start, finish, duration)
-            logging.info(f'writing data...\n{new_df}')
+            logging.info(f'Writing data...\n{new_df}')
             #df.append(new_df)
             new_df.to_csv(csv_file, mode='a', header=False, index=False)
             # upload csv here
             s3.upload_csv()
         else:
-            print(f'{get_current_time()} too early to water for today')
-            logging.info(f'too early to water for today')
+            print(f'{get_current_time()} Not the right time to water yet today')
+            logging.info('Not the right time to water yet today')
             return
     else:
-        print(f'{get_current_time()} already watered')
-        logging.info(f'already watered')
+        next_day = last_day + timedelta(gap_days)
+        next_day_string = next_day.strftime('%Y-%m-%d')
+        print(f'{get_current_time()} Watering already completed. Next scheduled watering: {next_day_string}, after {start_time}, for {water_duration}s')
+        logging.info(f'Watering already completed. Next scheduled watering: {next_day_string}, after {start_time}, for {water_duration}s')
 
 
 try:
@@ -102,7 +106,7 @@ except Exception as e:
     logging.error(f'{e}')
 except KeyboardInterrupt as e:
     print('Interrupted')
-    logging.error(f'KeyboardInterrupt')
+    logging.error('KeyboardInterrupt')
 except:
     print("Unexpected error:", sys.exc_info()[0])
     logging.error(f'{sys.exc_info()[0]}')
