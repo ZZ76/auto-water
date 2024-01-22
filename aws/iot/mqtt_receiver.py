@@ -100,7 +100,7 @@ class MqttReceiver():
         pass
 
     def update_device(self, device):
-       MqttReceiver.device = device
+        MqttReceiver.device = device
 
     def subscribe(self, topic, callback):
         print(f"Subscribing to topic '{topic}'...")
