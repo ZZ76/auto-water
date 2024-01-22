@@ -165,3 +165,7 @@ log
 auto-water.service
 retrive-from-lambda.sh
 *.swp
+test/
+*.crt
+*.key
+*.pem

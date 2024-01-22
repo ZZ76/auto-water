@@ -6,6 +6,7 @@ import sys
 import s3
 import water
 import config
+import iot
 '''
 csv file:
 date, start, finish, duration
@@ -23,15 +24,6 @@ while True:
           pass
     sleep interval
 '''
-
-log = config.LOG_FILE
-csv_file = config.CSV_FILE
-start_time = config.START_TIME
-water_duration = config.WATER_DURATION
-check_interval = config.CHECK_INTERVAL
-gap_days = config.GAP_DAYS
-duty = config.DUTY
-pin = config.PIN
 
 def get_current_time():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -93,20 +85,51 @@ def process_last_date(d: str):
         logging.info(f'Watering already completed. Next scheduled watering: {next_day_string}, after {start_time}, for {water_duration}s')
 
 
-try:
-    while True:
-        df = pd.read_csv(csv_file)
-        last_date = df.iloc[-1].date
-        process_last_date(last_date)
-        #upload log here
-        s3.upload_log()
-        time.sleep(check_interval)
-except Exception as e:
-    print(e)
-    logging.error(f'{e}')
-except KeyboardInterrupt as e:
-    print('Interrupted')
-    logging.error('KeyboardInterrupt')
-except:
-    print("Unexpected error:", sys.exc_info()[0])
-    logging.error(f'{sys.exc_info()[0]}')
+class WateringDevice():
+    log = config.LOG_FILE
+    csv_file = config.CSV_FILE
+    start_time = config.START_TIME
+    water_duration = config.WATER_DURATION
+    check_interval = config.CHECK_INTERVAL
+    gap_days = config.GAP_DAYS
+    duty = config.DUTY
+    pin = config.PIN
+
+    def __init__():
+        pass
+
+    def start():
+        while True:
+            df = pd.read_csv(csv_file)
+            last_date = df.iloc[-1].date
+            process_last_date(last_date)
+            #upload log here
+            s3.upload_log()
+            time.sleep(check_interval)
+
+if __name__ == '__main__':
+    try:
+        device = WateringDevice()
+        # Start mqtt and subscribe
+        MqttReceiver = mqtt_receiver.MqttReceiver()
+        MqttReceiver.subscribe(water_topic, iot.water_and_write_data)
+        MqttReceiver.subscribe(update_topic, iot.print_message)
+
+        # Start watering device
+        device.start()
+        #while True:
+        #    df = pd.read_csv(csv_file)
+        #    last_date = df.iloc[-1].date
+        #    process_last_date(last_date)
+        #    #upload log here
+        #    s3.upload_log()
+        #    time.sleep(check_interval)
+    except Exception as e:
+        print(e)
+        logging.error(f'{e}')
+    except KeyboardInterrupt as e:
+        print('Interrupted')
+        logging.error('KeyboardInterrupt')
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        logging.error(f'{sys.exc_info()[0]}')

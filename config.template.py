@@ -13,3 +13,11 @@ AWS_REGION = 'ap-southeast-2'
 AWS_KEY_ID = 'ASKEYIDKEYIDKEYIDKEY'
 AWS_KEY_SECRET = 'keysecretKEYSECRETkeysecretKEYSECRETkeys'
 FUNCTION_NAME = 'lambda-function-name'
+
+# aws iot
+IOT_INPUT_ENDPOINT = 'endpoint-of.iot.region.amazonaws.com'
+IOT_INPUT_PORT = 8883
+IOT_INPUT_CERT = 'path-to.cert.pem'
+IOT_INPUT_KEY = 'path-to.private.key'
+IOT_INPUT_CA = 'path-to-root-CA.crt'
+IOT_INPUT_CLIENTID = 'basicPubSub'
