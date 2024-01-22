@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(format='%(asctime)s-%(name)s-%(levelname)s: %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
-                    filename=log, encoding='utf-8', level=logging.INFO)
+                    filename=config.LOG_FILE, encoding='utf-8', level=logging.INFO)
 
 if __name__ == '__main__':
     try:
