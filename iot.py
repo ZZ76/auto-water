@@ -84,13 +84,13 @@ def update_parameters(topic, payload, dup, qos, retain, **kwargs):
     except Exception as e:
         print(e)
 
-def checking_parameters(topic, payload, dup, qos, retain, **kwargs):
-    print(f'''
+def check_parameters(topic, payload, dup, qos, retain, **kwargs):
+    print(f'''Checking parameters:
     start_time: {WateringDevice.start_time}
     duration: {WateringDevice.water_duration}
     gap_days: {WateringDevice.gap_days}
     ''')
-    logging.info(f'''
+    logging.info(f'''Checking parameters:
     start_time: {WateringDevice.start_time}
     duration: {WateringDevice.water_duration}
     gap_days: {WateringDevice.gap_days}
