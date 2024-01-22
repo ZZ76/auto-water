@@ -61,8 +61,6 @@ def water_and_write_data(topic, payload, dup, qos, retain, **kwargs):
         logging.info(f'Writing data...\n{new_df}')
         #df.append(new_df)
         new_df.to_csv(csv_file, mode='a', header=False, index=False)
-        # upload csv here
-        s3.upload_csv()
     except Exception as e:
         print(e)
     finally:
@@ -83,18 +81,26 @@ def update_parameters(topic, payload, dup, qos, retain, **kwargs):
             WateringDevice.water_duration = int(data['duration'])
     except Exception as e:
         print(e)
+    finally:
+        s3.upload_log()
 
 def check_parameters(topic, payload, dup, qos, retain, **kwargs):
-    print(f'''Checking parameters:
-    start_time: {WateringDevice.start_time}
-    duration: {WateringDevice.water_duration}
-    gap_days: {WateringDevice.gap_days}
-    ''')
-    logging.info(f'''Checking parameters:
-    start_time: {WateringDevice.start_time}
-    duration: {WateringDevice.water_duration}
-    gap_days: {WateringDevice.gap_days}
-    ''')
+    try:
+        print(f'''Checking parameters:
+        start_time: {WateringDevice.start_time}
+        duration: {WateringDevice.water_duration}
+        gap_days: {WateringDevice.gap_days}
+        ''')
+        logging.info(f'''Checking parameters:
+        start_time: {WateringDevice.start_time}
+        duration: {WateringDevice.water_duration}
+        gap_days: {WateringDevice.gap_days}
+        ''')
+    except Exception as e:
+        print(e)
+        logging.error(f'{e}')
+    finally:
+        s3.upload_log()
 
 def print_message(topic, payload, dup, qos, retain, **kwargs):
     try:
