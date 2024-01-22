@@ -98,7 +98,7 @@ class WateringDevice():
                 s3.upload_csv()
             else:
                 print(f'{get_current_time()} Not the right time to water yet today, scheduled after {WateringDevice.start_time}, for {WateringDevice.water_duration}s')
-                logging.info('Not the right time to water yet today, scheduled after {WateringDevice.start_time}, for {WateringDevice.water_duration}s')
+                logging.info(f'Not the right time to water yet today, scheduled after {WateringDevice.start_time}, for {WateringDevice.water_duration}s')
                 return
         else:
             next_day = last_day + timedelta(WateringDevice.gap_days)
