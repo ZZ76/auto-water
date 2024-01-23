@@ -1,0 +1,38 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iot:Publish",
+        "iot:Receive",
+        "iot:PublishRetain"
+      ],
+      "Resource": [
+        "arn:aws:iot:region:aws-account-id:topic/sdk/test/java",
+        "arn:aws:iot:region:aws-account-id:topic/sdk/test/python",
+        "arn:aws:iot:region:aws-account-id:topic/sdk/test/js",
+        "arn:aws:iot:region:aws-account-id:topic/sdk/auto-water/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iot:Subscribe",
+      "Resource": [
+        "arn:aws:iot:region:aws-account-id:topicfilter/sdk/test/java",
+        "arn:aws:iot:region:aws-account-id:topicfilter/sdk/test/python",
+        "arn:aws:iot:region:aws-account-id:topicfilter/sdk/test/js",
+        "arn:aws:iot:region:aws-account-id:topicfilter/sdk/auto-water/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iot:Connect",
+      "Resource": [
+        "arn:aws:iot:region:aws-account-id:client/sdk-java",
+        "arn:aws:iot:region:aws-account-id:client/basicPubSub",
+        "arn:aws:iot:region:aws-account-id:client/sdk-nodejs-*"
+      ]
+    }
+  ]
+}
