@@ -101,7 +101,7 @@ class WateringDevice():
                 logging.info(f'Not the right time to water yet today, scheduled after {WateringDevice.start_time}, for {WateringDevice.water_duration}s')
                 return
         else:
-            next_day = last_day + timedelta(WateringDevice.gap_days)
+            next_day = last_day + timedelta(WateringDevice.gap_days + 1)
             next_day_string = next_day.strftime('%Y-%m-%d')
             print(f'{get_current_time()} Watering already completed. Next scheduled watering: {next_day_string}, after {WateringDevice.start_time}, for {WateringDevice.water_duration}s')
             logging.info(f'Watering already completed. Next scheduled watering: {next_day_string}, after {WateringDevice.start_time}, for {WateringDevice.water_duration}s')
