@@ -75,12 +75,12 @@ class WateringDevice():
                 finish_time = datetime.now()
                 finish = finish_time.strftime('%H:%M:%S')
                 new_date = now.strftime('%Y-%m-%d')
-                duration = (finish_time - now).seconds
+                #duration = (finish_time - now).seconds
                 new_df = pd.DataFrame([[
                     new_date,
                     start,
                     finish,
-                    WateringDevice.duration
+                    WateringDevice.water_duration
                     ]],
                     columns=[
                         'date',
