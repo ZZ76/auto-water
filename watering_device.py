@@ -68,7 +68,7 @@ class WateringDevice():
                 # watering
                 print(f'{get_current_time()} Watering...')
                 logging.info('Watering...')
-                water.water_pwm(WateringDevice.water_duration, pin=pin, duty=duty)
+                water.water_pwm(WateringDevice.water_duration, pin=WateringDevice.pin, duty=WateringDevice.duty)
                 # finish, writing data
                 print(f'{get_current_time()} Watering completed')
                 logging.info('Watering completed')
